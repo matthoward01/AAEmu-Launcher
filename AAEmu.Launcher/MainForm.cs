@@ -1,5 +1,6 @@
 ﻿using AAEmu.Launcher.Basic;
 using AAEmu.Launcher.MailRu10;
+using AAEmu.Launcher.Properties;
 using AAEmu.Launcher.Trion12;
 using AAEmu.Launcher.Trion35;
 using AAEmu.Launcher.Trion60;
@@ -12,9 +13,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Sockets;
 using System.Security.Policy;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AAEmu.Launcher
@@ -990,6 +993,8 @@ namespace AAEmu.Launcher
                     }
                 }
             }
+
+            
 
             // Load the saved clients reference file
             LoadClientLookup();
@@ -3871,6 +3876,61 @@ namespace AAEmu.Launcher
                 Setting.Lang = v;
                 UpdateLocaleLanguage();
             }
+        }
+
+        public static async Task<bool> CheckAndDownloadFile(string fileId, string localFilePath)
+        {
+        string downloadUrl = $"https://drive.usercontent.google.com/download?id=18Nm_Q7OgWOfdw_8Xl4TBXa1Z51uGHEIh&export=download&confirm=t&uuid=48e1b0e1-0e81-427a-ae00-e77941d18d32";
+        //string downloadUrl = $"https://drive.google.com/uc?export=download&id={fileId}";
+        
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                // Get the file's last modified time from the download link
+                HttpResponseMessage response = await httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Head, downloadUrl));
+                if (response.IsSuccessStatusCode)
+                {
+                        // Download the file
+                        HttpResponseMessage downloadResponse = await httpClient.GetAsync(downloadUrl);
+                        if (downloadResponse.IsSuccessStatusCode)
+                        {
+                            byte[] fileBytes = await downloadResponse.Content.ReadAsByteArrayAsync();
+                            File.WriteAllBytes(localFilePath, fileBytes);
+                            Console.WriteLine("Download complete.");
+                            return true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Failed to download the file.");
+                            return false;
+                        }
+                    }
+            }
+            return false;
+        }
+
+        public static async Task UpdateNew(LauncherFileSettings settings)
+        {
+            string fileId = "1rIPJlef5jfza6bha488jhNqEV2lroi5F";  // Replace with your file ID
+            string directory = Directory.GetParent(settings.PathToGame).ToString();
+            string localFilePath = $"{Directory.GetParent(directory)}\\game\\db\\compact.sqlite3";  // Replace with your local file path
+
+            bool isUpdated = await CheckAndDownloadFile(fileId, localFilePath);
+            if (isUpdated)
+            {
+                MessageBox.Show("File Updated");
+                Console.WriteLine("The file was updated and downloaded.");
+            }
+            else
+            {
+                MessageBox.Show("File Up to Date");
+                Console.WriteLine("The local file is up to date.");
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            UpdateNew(Setting);
         }
     }
 }
