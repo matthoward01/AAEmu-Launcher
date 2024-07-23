@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Sockets;
@@ -3880,7 +3881,7 @@ namespace AAEmu.Launcher
 
         public static async Task<bool> CheckAndDownloadFile(string fileId, string localFilePath)
         {
-        string downloadUrl = $"https://drive.usercontent.google.com/download?id=18Nm_Q7OgWOfdw_8Xl4TBXa1Z51uGHEIh&export=download&confirm=t&uuid=48e1b0e1-0e81-427a-ae00-e77941d18d32";
+        string downloadUrl = $"https://drive.usercontent.google.com/download?id=1h7-L5BJm9agUBl5LEnNDVjAA3lQ10gHa&export=download&confirm=t&uuid=cc1c1a86-8eea-4648-bc12-c0a3d440cb78&at=APZUnTX8N1SeemYW23FO2sbos9MN%3A1721689687454";
         //string downloadUrl = $"https://drive.google.com/uc?export=download&id={fileId}";
         
 
@@ -3913,9 +3914,29 @@ namespace AAEmu.Launcher
         {
             string fileId = "1rIPJlef5jfza6bha488jhNqEV2lroi5F";  // Replace with your file ID
             string directory = Directory.GetParent(settings.PathToGame).ToString();
-            string localFilePath = $"{Directory.GetParent(directory)}\\game\\db\\compact.sqlite3";  // Replace with your local file path
+            string localFilePathZip = $"{Directory.GetParent(directory)}\\game\\db\\compact.zip";  // Replace with your local file path
+            string localFilePath = $"{Directory.GetParent(directory)}\\game\\db\\";  // Replace with your local file path
+            string fileName = "compact.sqlite3";
+                        
 
-            bool isUpdated = await CheckAndDownloadFile(fileId, localFilePath);
+            bool isUpdated = await CheckAndDownloadFile(fileId, localFilePathZip);
+
+            using (ZipArchive archive = ZipFile.OpenRead(localFilePathZip))
+            {
+                ZipArchiveEntry entry = archive.GetEntry(fileName);
+                if (entry != null)
+                {
+                    Directory.CreateDirectory(localFilePath);
+
+                    string destinationPath = Path.Combine(localFilePath, fileName);
+                    entry.ExtractToFile(destinationPath, true);
+                }
+            }
+            if (File.Exists(localFilePathZip))
+            {
+                File.Delete(localFilePathZip);
+            }
+
             if (isUpdated)
             {
                 MessageBox.Show("File Updated");
@@ -3926,7 +3947,7 @@ namespace AAEmu.Launcher
                 MessageBox.Show("File Up to Date");
                 Console.WriteLine("The local file is up to date.");
             }
-        }
+        }       
 
         private void button1_Click(object sender, EventArgs e)
         {
