@@ -138,7 +138,7 @@
             this.btnClose = new System.Windows.Forms.PictureBox();
             this.btnMinimize = new System.Windows.Forms.PictureBox();
             this.ttLocale = new System.Windows.Forms.ToolTip(this.components);
-            this.button1 = new System.Windows.Forms.Button();
+            this.bUpdate = new System.Windows.Forms.Button();
             this.panelLoginAndPatch.SuspendLayout();
             this.pPatchSteps.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pgbFrontTotal)).BeginInit();
@@ -1349,17 +1349,17 @@
             this.ttLocale.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.ttLocale.ToolTipTitle = "Game Locale Setting";
             // 
-            // button1
+            // bUpdate
             // 
-            this.button1.BackColor = System.Drawing.Color.ForestGreen;
-            this.button1.Font = new System.Drawing.Font("Impact", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(13, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(130, 39);
-            this.button1.TabIndex = 55;
-            this.button1.Text = "Update";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.bUpdate.BackColor = System.Drawing.Color.ForestGreen;
+            this.bUpdate.Font = new System.Drawing.Font("Impact", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bUpdate.Location = new System.Drawing.Point(13, 12);
+            this.bUpdate.Name = "bUpdate";
+            this.bUpdate.Size = new System.Drawing.Size(130, 39);
+            this.bUpdate.TabIndex = 55;
+            this.bUpdate.Text = "Update";
+            this.bUpdate.UseVisualStyleBackColor = false;
+            this.bUpdate.Click += new System.EventHandler(this.bUpdate_Click);
             // 
             // LauncherForm
             // 
@@ -1367,7 +1367,7 @@
             this.BackColor = System.Drawing.Color.DimGray;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(950, 510);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.bUpdate);
             this.Controls.Add(this.btnMinimize);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.lDownloadLauncherUpdate);
@@ -1532,7 +1532,7 @@
         private System.Windows.Forms.ToolStripMenuItem miLocaleEnglishSignapore;
         private System.Windows.Forms.ToolStripSeparator miLocaleS3;
         private System.Windows.Forms.ToolStripMenuItem svenskaToolStripMenuItem;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button bUpdate;
     }
 }
 

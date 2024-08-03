@@ -3879,7 +3879,7 @@ namespace AAEmu.Launcher
             }
         }
 
-        public static async Task<bool> CheckAndDownloadFile(string fileId, string localFilePath)
+        public async Task<bool> CheckAndDownloadFile(string fileId, string localFilePath)
         {
         string downloadUrl = $"https://drive.usercontent.google.com/download?id=1h7-L5BJm9agUBl5LEnNDVjAA3lQ10gHa&export=download&confirm=t&uuid=cc1c1a86-8eea-4648-bc12-c0a3d440cb78&at=APZUnTX8N1SeemYW23FO2sbos9MN%3A1721689687454";
         //string downloadUrl = $"https://drive.google.com/uc?export=download&id={fileId}";
@@ -3910,8 +3910,10 @@ namespace AAEmu.Launcher
             return false;
         }
 
-        public static async Task UpdateNew(LauncherFileSettings settings)
-        {
+        public async Task UpdateNew(LauncherFileSettings settings)
+        {   
+            bUpdate.Enabled = false;
+            bUpdate.BackColor = Color.Red;
             string fileId = "1rIPJlef5jfza6bha488jhNqEV2lroi5F";  // Replace with your file ID
             string directory = Directory.GetParent(settings.PathToGame).ToString();
             string localFilePathZip = $"{Directory.GetParent(directory)}\\game\\db\\compact.zip";  // Replace with your local file path
@@ -3939,18 +3941,22 @@ namespace AAEmu.Launcher
 
             if (isUpdated)
             {
+                bUpdate.Enabled = true;
+                bUpdate.BackColor = Color.ForestGreen;
                 MessageBox.Show("File Updated");
                 Console.WriteLine("The file was updated and downloaded.");
             }
             else
             {
+                bUpdate.Enabled = true;
+                bUpdate.BackColor = Color.ForestGreen;
                 MessageBox.Show("File Up to Date");
                 Console.WriteLine("The local file is up to date.");
             }
         }       
 
-        private void button1_Click(object sender, EventArgs e)
-        {
+        private void bUpdate_Click(object sender, EventArgs e)
+        {            
             UpdateNew(Setting);
         }
     }
